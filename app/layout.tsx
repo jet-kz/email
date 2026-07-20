@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Private Email Campaign Platform",
-  description: "Private automated campaign sender and contact database manager powered by AI.",
+  title: "Spacexer",
+  description: "Spacexer",
 };
 
 export default function RootLayout({
