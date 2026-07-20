@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { Receiver } from "@upstash/qstash";
 import { Resend } from "resend";
+import CampaignEmail from "@/emails/campaign-email";
 
 const currentKey = process.env.QSTASH_CURRENT_SIGNING_KEY || "";
 const nextKey = process.env.QSTASH_NEXT_SIGNING_KEY || "";
@@ -37,7 +38,7 @@ export async function POST(req: NextRequest) {
       from: fromField,
       to: email,
       subject,
-      html: body,
+      react: CampaignEmail({ body }),
       replyTo: replyTo || undefined,
     });
 
