@@ -6,7 +6,9 @@ const currentKey = process.env.QSTASH_CURRENT_SIGNING_KEY || "";
 const nextKey = process.env.QSTASH_NEXT_SIGNING_KEY || "";
 const receiver = currentKey ? new Receiver({ currentSigningKey: currentKey, nextSigningKey: nextKey }) : null;
 const resend = new Resend(process.env.RESEND_API_KEY!);
-const senderEmail = process.env.SENDER_EMAIL || "hello@yourdomain.com";
+const senderEmail = process.env.SENDER_EMAIL || "info@spacexer.online";
+const senderName = process.env.SENDER_NAME || "Spacexer";
+const fromField = `${senderName} <${senderEmail}>`;
 
 export async function POST(req: NextRequest) {
   try {
@@ -32,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     // 3. Dispatch the email individually
     const { data, error } = await resend.emails.send({
-      from: senderEmail,
+      from: fromField,
       to: email,
       subject,
       html: body,
