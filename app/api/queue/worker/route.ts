@@ -3,6 +3,18 @@ import { Receiver } from "@upstash/qstash";
 import { Resend } from "resend";
 import CampaignEmail from "@/emails/campaign-email";
 
+// Helper function to process {option1|option2} syntax dynamically on a per-email basis
+function applySpintax(text: string): string {
+  if (!text) return text;
+  return text.replace(/{([^{}]+)}/g, (match, contents) => {
+    // If it's a name replacement or similar single value, just leave it or process it later.
+    // Only split by pipe for spintax formatting.
+    if (!contents.includes('|')) return match;
+    const options = contents.split('|');
+    const randomIndex = Math.floor(Math.random() * options.length);
+    return options[randomIndex];
+  });
+}
 const currentKey = process.env.QSTASH_CURRENT_SIGNING_KEY || "";
 const nextKey = process.env.QSTASH_NEXT_SIGNING_KEY || "";
 const receiver = currentKey ? new Receiver({ currentSigningKey: currentKey, nextSigningKey: nextKey }) : null;
@@ -33,12 +45,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing required payload" }, { status: 400 });
     }
 
+    // Process spintax so every single email gets a unique combination of words
+    const uniqueSubject = applySpintax(subject);
+    const uniqueBody = applySpintax(body);
+
     // 3. Dispatch the email individually
     const { data, error } = await resend.emails.send({
       from: fromField,
       to: email,
-      subject,
-      react: CampaignEmail({ body }),
+      subject: uniqueSubject,
+      react: CampaignEmail({ body: uniqueBody }),
       replyTo: replyTo || undefined,
     });
 

@@ -179,6 +179,9 @@ export default function SinglePageMailer() {
                 required
                 className="w-full p-3 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none"
               />
+              <p className="text-xs text-zinc-500 mt-2">
+                <strong>Pro-tip:</strong> Use Spintax to bypass spam filters: <code>{`{Hello|Hi|Greetings}`} there!</code>
+              </p>
             </div>
 
             <div>
@@ -190,6 +193,9 @@ export default function SinglePageMailer() {
                 required
                 className="w-full h-64 p-3 bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none font-sans"
               />
+              <p className="text-xs text-zinc-500 mt-2">
+                Every single email dispatched will automatically shuffle any words wrapped like <code>{`{word1|word2|word3}`}</code> to ensure completely unique content.
+              </p>
             </div>
           </div>
 
